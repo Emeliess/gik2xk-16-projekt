@@ -1,63 +1,36 @@
 const router = require("express").Router();
 const db = require("../models");
-const validate = require("validate.js");
-
-/*----------------CONSTRAINTS--------------------*/
-const constraints = {
-  eMail: {
-    email: {
-      message: "^Du måste ange en giltig mejladress",
-    },
-  },
-};
+const userService = require("../services/userService");
 
 /*----------------GET--------------------------- */
 router.get("/", (req, res) => {
-  db.user.findAll().then((result) => {
-    res.send(result);
+  userService.getAll().then((result) => {
+    res.status(result.status).json(result.data);
   });
 });
 
 /*----------------CREATE / POST----------------- */
 router.post("/", (req, res) => {
   const body = req.body;
-  const invalidData = validate(body, constraints);
-  if (invalidData) {
-    res.status(400).json(invalidData);
-  } else {
-    db.user.create(body).then((result) => {
-      res.send("Användare har skapats");
-    });
-  }
+  userService.create(body).then((result) => {
+    res.status(result.status).json(result.data);
+  });
 });
 /*----------------UPDATE / PUT------------------ */
 router.put("/", (req, res) => {
   const body = req.body;
-  const invalidData = validate(body, constraints);
   const id = body.id;
-  if (invalidData || !id) {
-    res.status(400).json(invalidData || "id är obligatoriskt");
-  } else {
-    db.user
-      .update(body, {
-        where: { id: body.id },
-      })
-      .then((result) => {
-        res.send("Användare har uppdaterats");
-      });
-  }
+  userService.update(body, id).then((result) => {
+    res.status(result.status).json(result.data);
+  });
 });
 /*----------------DELETE / DESTROY-------------- */
 
 router.delete("/", (req, res) => {
-  const body = req.body;
-  db.user
-    .destroy({
-      where: { id: body.id },
-    })
-    .then((result) => {
-      res.json(`Antal användare raderade ${result}`);
-    });
+  const id = req.body.id;
+  userService.destroy(id).then((result) => {
+    res.status(result.status).json(result.data);
+  });
 });
 
 module.exports = router;
