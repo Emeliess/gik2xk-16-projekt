@@ -18,10 +18,10 @@ function ProductDetail() {
 
   return (
     <>
-      <Image rounded="true" fluid="true" src={product.imageUrl}></Image>
+      <Image rounded="true" fluid="true" width="400px" src={product.imageUrl}></Image>
       <h2>{product.title}</h2>
       <p>{product.description}</p>
-      <p>{product.price}</p>
+      <p>{product.price} kr</p>
       {getRating(product.rating)}
     </>
   );
