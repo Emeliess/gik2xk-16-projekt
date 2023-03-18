@@ -1,5 +1,5 @@
 import './App.css';
-import StoreNav from './views/components/StoreNav';
+import StoreNav from './components/StoreNav';
 import { Route, Routes } from 'react-router-dom';
 import Home from './views/Home';
 import Products from './views/Products';
@@ -7,6 +7,7 @@ import ShoppingCart from './views/ShoppingCart';
 import ProductDetail from './views/ProductDetail';
 import React, { useState } from 'react';
 import Administration from './views/Administration';
+import UpdateProduct from './views/UpdateProduct';
 
 export const CartContext = React.createContext(null);
 
@@ -24,6 +25,7 @@ function App() {
                         <Route path='/kundvagn' element={<ShoppingCart></ShoppingCart>}></Route>
                         <Route path="/produkt/:id" element={<ProductDetail ></ProductDetail>}></Route>
                         <Route path="/administration" element={<Administration></Administration>}></Route>
+                        <Route path="/uppdateraProdukt/:id" element={<UpdateProduct></UpdateProduct>}></Route>
                     </Routes>
                 </div>
             </CartContext.Provider>        

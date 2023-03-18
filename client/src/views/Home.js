@@ -8,7 +8,7 @@ function Home() {
           <Carousel.Item className="image">
           <img
               className="d-block w-100"
-              src="https://www.vadvivet.se/content/images/2021/07/c-dustin-K-Iog-Bqf8E-unsplash.jpeg"
+              src="https://images.unsplash.com/photo-1597714026720-8f74c62310ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
               alt="Second slide"
             />
             <Carousel.Caption>

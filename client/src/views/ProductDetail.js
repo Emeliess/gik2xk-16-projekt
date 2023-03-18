@@ -1,20 +1,18 @@
 import { useParams } from "react-router-dom";
 import Image from "react-bootstrap/Image";
 import { BsStar, BsStarFill } from "react-icons/bs";
+import { getOne } from "../services/productService";
+import { useState, useEffect } from "react";
 
 function ProductDetail() {
   const params = useParams();
   const id = params.id;
 
-  const product = {
-    id: id,
-    title: "Moln",
-    description: "Fint moln",
-    rating: 4,
-    price: 200,
-    imageUrl:
-      "https://www.vadvivet.se/content/images/2021/07/c-dustin-K-Iog-Bqf8E-unsplash.jpeg",
-  };
+  const [product, setProduct] = useState([]);
+
+  useEffect(() => {
+    getOne(id).then((result)=> setProduct(result));
+  }, [id]);
 
   return (
     <>

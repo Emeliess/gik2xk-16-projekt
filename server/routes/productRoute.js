@@ -18,6 +18,14 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.product.findOne({ where: { id: id } }).then((result) => {
+    res.send(result);
+  });
+});
+
 /*----------------CREATE / POST----------------- */
 router.post("/", (req, res) => {
   const body = req.body;
@@ -48,14 +56,21 @@ router.put("/", (req, res) => {
   }
 });
 /*----------------DELETE / DESTROY-------------- */
-router.delete("/", (req, res) => {
-  db.product
+router.delete("/:id", (req, res) => {
+  const id = req.params.id;
+
+  if (id) {
+    db.product
     .destroy({
-      where: { id: req.body.id },
+      where: { id: id },
     })
     .then((result) => {
       res.json(`Antal produkter raderade: ${result}`);
     });
+  }
+  else {
+    res.json("Inget produktId angivet");
+  }
 });
 
 module.exports = router;

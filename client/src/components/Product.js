@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import { LinkContainer } from "react-router-bootstrap";
-import { CartContext } from "../../App";
+import { CartContext } from "../App";
 import { useContext } from "react";
 
 function Product({ product }) {
