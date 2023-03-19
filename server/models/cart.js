@@ -6,5 +6,6 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
     },
     payed: DataTypes.BOOLEAN,
+    total: DataTypes.DOUBLE,
   });
 };

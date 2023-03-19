@@ -1,7 +1,14 @@
 const router = require("express").Router();
 const userService = require("../services/userService");
 
-router.get("/cart/", (req, res) => {});
+/*Get userId och cartID */
+router.get("/:userId/carts/:cartId", (req, res) => {
+  const userId = req.params.userId;
+  const cartId = req.params.cartId;
+  userService.getProductFromCart(userId, cartId).then((result) => {
+    res.status(result.status).json(result.data);
+  });
+});
 
 /*----------------GET--------------------------- */
 router.get("/", (req, res) => {

@@ -33,19 +33,46 @@ async function addRating(id, rating) {
   }
   try {
     rating.productId = id;
-    const newRating = await db.rating.create(rating);
-    return createResponseSuccess(newRating);
+    await db.rating.create(rating);
+    const productWithNewRating = await db.product.findOne({
+      where: { id },
+      include: [db.rating],
+    });
+    return createResponseSuccess(productWithNewRating);
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
 }
+
 /*ADD TO CART */
-async function addToCart(id, row) {}
+async function addToCart(userId, productId, row) {
+  if (!userId) {
+    return createResponseError(422, "UserId är obligatoriskt");
+  }
+  try {
+    row.productId = productId;
+    const cart = await db.cart.findOne({
+      where: { userId },
+    });
+    row.cartId = cart.id;
+    console.log(cart.id);
+    await db.row.create(row);
+    const newCart = await db.cart.findOne({
+      where: { id: cart.id },
+      include: [db.cartRow],
+    });
+    return createResponseSuccess(newCart);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
 
 /*----------------GET ALL-------------- */
 async function getAll() {
   try {
-    const allProduct = await db.product.findAll();
+    const allProduct = await db.product.findAll({
+      include: [db.rating],
+    });
     /*Om allt blev bra returnera allProduct.*/
     return createResponseSuccess(allProduct);
   } catch (error) {
