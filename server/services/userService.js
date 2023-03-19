@@ -14,6 +14,7 @@ const constraints = {
   },
 };
 /*-----------------------------------------------*/
+
 async function getAll() {
   try {
     const allUser = await db.user.findAll();

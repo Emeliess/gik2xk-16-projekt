@@ -1,6 +1,7 @@
 const router = require("express").Router();
-const db = require("../models");
 const userService = require("../services/userService");
+
+router.get("/cart/", (req, res) => {});
 
 /*----------------GET--------------------------- */
 router.get("/", (req, res) => {
