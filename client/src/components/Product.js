@@ -9,6 +9,11 @@ function Product({ product }) {
   // eslint-disable-next-line
   const { cart, setCart } = useContext(CartContext);
 
+  function addProductToCart() {
+    cart.push(product);
+    setCart(cart);
+  }
+
   return (
     <Card style={{ width: "18rem" }}>
       <Card.Img variant="top" src={product.imageUrl} />
@@ -24,7 +29,7 @@ function Product({ product }) {
         </Card.Text>
         <Button
           variant="success"
-          onClick={() => addProductToCart(product, cart)}
+          onClick={addProductToCart}
         >
           Lägg till i kundvagn
         </Button>
@@ -44,10 +49,6 @@ function getRating(rating) {
   }
 
   return stars;
-}
-
-function addProductToCart(product, cart) {
-  cart.push(product);
 }
 
 export default Product;

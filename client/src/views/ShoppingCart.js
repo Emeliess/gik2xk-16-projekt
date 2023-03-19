@@ -1,12 +1,29 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { CartContext } from "../App";
 
 function ShoppingCart() {
   // eslint-disable-next-line
   const { cart, setCart } = useContext(CartContext);
-
+    // eslint-disable-next-line
+  const [ products, setProducts ] = useState([]);
+  const count = {};
   let totalPrice = 0;
+  
+  // Loopar igenom varje produkt i kundvagnen
+  // Om produktens id redan finns i "count" plussas antalet upp med 1
+  // om inte läggs produktens id till i count med värdet 1.
+  cart.forEach(p => {
+    count[p.id] = count[p.id] ? count[p.id] + 1 : 1;
+  });
+
+  for(const key in count) {
+    // eslint-disable-next-line
+    let p = cart.find(pp => pp.id == key);
+    p.count = count[key];
+    products.push(p);
+    totalPrice += p.count * p.price;
+  };
 
   return (
     <>
@@ -22,17 +39,16 @@ function ShoppingCart() {
           </tr>
         </thead>
         <tbody>
-          {cart && cart.length > 0 ? (
-            cart.map((product, i) => {
-              totalPrice += product.price;
+          {products && products.length > 0 ? (
+            products.map((product, i) => {
               return (
                 <>
                   <tr key={i}>
                     <th>{i + 1}</th>
                     <td>{product.title}</td>
                     <td>{product.price} kr</td>
-                    <td>####</td>
-                    <td>{product.price} kr</td>
+                    <td>{product.count}</td>
+                    <td>{product.price * product.count} kr</td>
                   </tr>
                 </>
               );
