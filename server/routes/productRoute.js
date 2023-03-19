@@ -33,6 +33,7 @@ router.get("/", (req, res) => {
     res.status(result.status).json(result.data);
   });
 });
+
 /*----------------CREATE / POST----------------- */
 router.post("/", (req, res) => {
   const body = req.body;
@@ -49,12 +50,14 @@ router.put("/", (req, res) => {
   });
 });
 /*----------------DELETE / DESTROY-------------- */
-
 router.delete("/", (req, res) => {
-  const id = req.body.id;
-  productService.destroy(id).then((result) => {
-    res.status(result.status).json(result.data);
-  });
+  db.product
+    .destroy({
+      where: { id: req.body.id },
+    })
+    .then((result) => {
+      res.json(`Antal produkter raderade: ${result}`);
+    });
 });
 
 module.exports = router;

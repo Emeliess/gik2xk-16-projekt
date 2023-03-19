@@ -2,12 +2,17 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import { LinkContainer } from "react-router-bootstrap";
-import { CartContext } from "../../App";
+import { CartContext } from "../App";
 import { useContext } from "react";
 
 function Product({ product }) {
   // eslint-disable-next-line
   const { cart, setCart } = useContext(CartContext);
+
+  function addProductToCart() {
+    cart.push(product);
+    setCart(cart);
+  }
 
   return (
     <Card style={{ width: "18rem" }}>
@@ -24,7 +29,7 @@ function Product({ product }) {
         </Card.Text>
         <Button
           variant="success"
-          onClick={() => addProductToCart(product, cart)}
+          onClick={addProductToCart}
         >
           Lägg till i kundvagn
         </Button>
@@ -44,10 +49,6 @@ function getRating(rating) {
   }
 
   return stars;
-}
-
-function addProductToCart(product, cart) {
-  cart.push(product);
 }
 
 export default Product;
