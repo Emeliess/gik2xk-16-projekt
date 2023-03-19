@@ -14,7 +14,7 @@ const constraints = {
   },
 };
 /*-----------------------------------------------*/
-
+/*GET BY ID */
 async function getById(id) {
   try {
     const allProduct = await db.product.findOne({
@@ -26,7 +26,7 @@ async function getById(id) {
     return createResponseError(error.status, error.message);
   }
 }
-
+/*ADD RATING */
 async function addRating(id, rating) {
   if (!id) {
     return createResponseError(422, "id är obligatoriskt");
@@ -39,10 +39,10 @@ async function addRating(id, rating) {
     return createResponseError(error.status, error.message);
   }
 }
-
+/*ADD TO CART */
 async function addToCart(id, row) {}
 
-/*----------------GET ALL------------include ----- */
+/*----------------GET ALL-------------- */
 async function getAll() {
   try {
     const allProduct = await db.product.findAll();

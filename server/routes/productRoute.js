@@ -10,13 +10,8 @@ router.get("/:id/", (req, res) => {
   });
 });
 /*ADD TO CART */
-/* router.post(":id/addToCart", (req, res) => {
-  const row = req.body;
-  const id = req.params.id;
-  productService.addToCart(id, row).then((result) => {
-    res.status(result.status).json(result.data);
-  });
-}); */
+router.post(":id/addToCart", (req, res) => {});
+
 /*ADD RATING*/
 router.post("/:id/addRating", (req, res) => {
   const rating = req.body;
