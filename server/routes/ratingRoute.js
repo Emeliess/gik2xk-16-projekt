@@ -18,6 +18,13 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/:id", (req, res) => {
+  let id = req.params.id;
+  db.rating.findAll({ where: { productId : id }}).then((result) => {
+    res.send(result);
+  });
+});
+
 /*----------------CREATE / POST----------------- */
 router.post("/", (req, res) => {
   const body = req.body;
