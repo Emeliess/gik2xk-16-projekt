@@ -2,15 +2,6 @@ const router = require("express").Router();
 const db = require("../models");
 const validate = require("validate.js");
 
-/*----------------CONSTRAINTS--------------------*/
-/* const constraints = {
-  eMail: {
-    email: {
-      message: "^Du måste ange en giltig mejladress",
-    },
-  },
-}; */
-
 /*----------------GET--------------------------- */
 router.get("/", (req, res) => {
   db.cart.findAll().then((result) => {
