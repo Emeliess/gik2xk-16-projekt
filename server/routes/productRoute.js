@@ -15,12 +15,15 @@ router.post("/:id/addRating", (req, res) => {
 router.post("/addToCart/:userId", async (req, res) => {
   const { userId } = req.params;
   const { productId, amount } = req.body;
-  const result = await productService.addToCart(productId, userId, amount);
+  productService.addToCart(productId, userId, amount).then((result) => {
+    res.status(result.status).json(result.data);
+  });
+  /*   const result = await productService.addToCart(productId, userId, amount);
   if (result.success) {
     res.status(200).json(result);
   } else {
     res.status(400).json(result);
-  }
+  } */
 });
 
 //-----HITTA PRODUKT_ID
