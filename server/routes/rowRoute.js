@@ -1,3 +1,5 @@
+//-----DENNA ROUTE ANVÄNDS EJ. ENBART FÖR TEST
+
 const router = require("express").Router();
 const db = require("../models");
 

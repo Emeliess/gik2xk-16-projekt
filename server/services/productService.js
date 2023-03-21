@@ -16,20 +16,6 @@ const constraints = {
   },
 };
 
-//Hitta productID och inkludera ratings
-/* async function getById(id) {
-  try {
-    const allProduct = await db.product.findOne({
-      where: { id },
-      include: [db.rating],
-    });
-    return createResponseSuccess(allProduct);
-  } catch (error) {
-    return createResponseError(error.status, error.message);
-  }
-}
- */
-
 //-----HITTA PRODUKT_ID OCH INKLUDERA MEDELVÄRDE AV BETYG
 const sequelize = require("sequelize");
 async function getById(id) {
@@ -67,7 +53,8 @@ async function addRating(id, rating) {
     return createResponseError(error.status, error.message);
   }
 }
-//-----SKAPA RADER I VARUKORGEN
+
+//-----LÄGG TILL PRODUKT I VARUKORG
 async function addToCart(productId, userId, amount) {
   try {
     // Kolla om användaren redan har en cart
@@ -179,6 +166,20 @@ module.exports = {
   update,
   destroy,
 };
+
+//Hitta productID och inkludera ratings
+/* async function getById(id) {
+  try {
+    const allProduct = await db.product.findOne({
+      where: { id },
+      include: [db.rating],
+    });
+    return createResponseSuccess(allProduct);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+ */
 
 /* async function addToCart(userId, productId, row) {
   if (!userId) {

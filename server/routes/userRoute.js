@@ -1,29 +1,14 @@
 const router = require("express").Router();
 const userService = require("../services/userService");
 
-/*Get carts */
-router.get("/carts/", (req, res) => {
-  userService.getCarts().then((result) => {
-    res.status(result.status).json(result.data);
-  });
-});
-
-//Get cart for user ID
-router.get("/:userId/cart/", (req, res) => {
-  const userId = req.params.userId;
-  userService.getCart(userId).then((result) => {
-    res.status(result.status).json(result.data);
-  });
-});
-
-// Get userID
+//-----HÄMTA USER_ID
 router.get("/:id/", (req, res) => {
   const id = req.params.id;
   userService.getById(id).then((result) => {
     res.status(result.status).json(result.data);
   });
 });
-//-----------------------------------------------------------------
+
 //-----GET ALL
 router.get("/", (req, res) => {
   userService.getAll().then((result) => {
@@ -61,6 +46,21 @@ module.exports = router;
 /* router.get("/:userId/cartContent/", (req, res) => {
   const userId = req.params.userId;
   userService.getCartContent(userId).then((result) => {
+    res.status(result.status).json(result.data);
+  });
+}); */
+
+/*Get carts */
+/* router.get("/carts/", (req, res) => {
+  userService.getCarts().then((result) => {
+    res.status(result.status).json(result.data);
+  });
+}); */
+
+//Get cart for user ID
+/* router.get("/:userId/cart/", (req, res) => {
+  const userId = req.params.userId;
+  userService.getCart(userId).then((result) => {
     res.status(result.status).json(result.data);
   });
 }); */
