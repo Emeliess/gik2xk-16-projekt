@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const productService = require("../services/productService");
 const db = require("../models");
+const { async } = require("validate.js");
 
 //-----LÄGGA TILL BETYG PÅ PRODUKT
 router.post("/:id/addRating", (req, res) => {
@@ -10,6 +11,12 @@ router.post("/:id/addRating", (req, res) => {
     res.status(result.status).json(result.data);
   });
 });
+
+router.get("/:id/ratings", async (req, res) => {
+  const id = req.params.id;
+  const result = await productService.getRatings(id);
+  res.status(result.status).json(result.data);
+})
 
 //-----LÄGG TILL PRODUKT I VARUKORG
 router.post("/addToCart/:userId", async (req, res) => {
@@ -58,10 +65,10 @@ router.put("/", (req, res) => {
 });
 
 //-----DELETE
-router.delete("/", (req, res) => {
+router.delete("/:id", (req, res) => {
   db.product
     .destroy({
-      where: { id: req.body.id },
+      where: { id: req.params.id },
     })
     .then((result) => {
       res.json(`Antal produkter raderade: ${result}`);

@@ -38,3 +38,9 @@ export async function setProductRating(id, rating) {
 
     return result.data;
 }
+
+export async function getProductRatings(id) {
+    const result = await api.get("products/"+ id + "/ratings");
+
+    return result.data;
+}

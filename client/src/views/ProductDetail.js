@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import Image from "react-bootstrap/Image";
 import { BsStar, BsStarFill } from "react-icons/bs";
-import { getOne, setProductRating } from "../services/productService";
+import { getOne, getProductRatings, setProductRating } from "../services/productService";
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../App";
 import Dropdown from "react-bootstrap/Dropdown"
@@ -14,6 +14,7 @@ function ProductDetail() {
   const [product, setProduct] = useState([]);
   const [rating, setRating] = useState(0);
   const { cart, setCart } = useContext(CartContext);
+  const [ratings, setRatings] = useState([]);
 
   useEffect(() => {
     getOne(id).then((result) => {
@@ -28,6 +29,13 @@ function ProductDetail() {
     cart.push(product);
     setCart(cart);
   }
+
+  useEffect(() => {
+    getProductRatings(id).then(result => {
+      console.log(result)
+      setRatings(result);
+    })
+  }, [id])
 
   function getRating() {
     let stars = [];
