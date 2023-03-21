@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const userService = require("../services/userService");
 
-//-----HÄMTA USER_ID
+//-----HITTA USER_ID OCH VISA VARUKORG MED INNEHÅLL
 router.get("/:id/", (req, res) => {
   const id = req.params.id;
   userService.getById(id).then((result) => {

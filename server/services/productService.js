@@ -34,6 +34,7 @@ async function getById(id) {
         },
       ],
     });
+
     return createResponseSuccess(allProduct);
   } catch (error) {
     return createResponseError(error.status, error.message);
