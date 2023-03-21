@@ -28,6 +28,13 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/:id", (req, res) => {
+  let id = req.params.id;
+  db.rating.findAll({ where: { productId : id }}).then((result) => {
+    res.send(result);
+  });
+});
+
 router.post("/", (req, res) => {
   const body = req.body;
   const invalidData = validate(body, constraints);
