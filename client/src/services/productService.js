@@ -30,7 +30,7 @@ export async function deleteProduct(id) {
   return result.data;
 }
 
-export async function getProductRating(id) {
+export async function getProductRatings(id) {
   const result = await api.get("/ratings/" + id);
 
   return result.data;
