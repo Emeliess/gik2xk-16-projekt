@@ -1,15 +1,14 @@
 const router = require("express").Router();
 const db = require("../models");
-const validate = require("validate.js");
 
-/*----------------GET--------------------------- */
 router.get("/", (req, res) => {
   db.cart.findAll().then((result) => {
     res.send(result);
   });
 });
 
-/*----------------CREATE / POST----------------- */
+module.exports = router;
+/* 
 router.post("/", (req, res) => {
   const body = req.body;
   const invalidData = validate(body);
@@ -21,7 +20,7 @@ router.post("/", (req, res) => {
     });
   }
 });
-/*----------------UPDATE / PUT------------------ */
+
 router.put("/", (req, res) => {
   const body = req.body;
   const invalidData = validate(body);
@@ -38,7 +37,7 @@ router.put("/", (req, res) => {
       });
   }
 });
-/*----------------DELETE / DESTROY-------------- */
+
 router.delete("/", (req, res) => {
   db.cart
     .destroy({
@@ -48,5 +47,4 @@ router.delete("/", (req, res) => {
       res.json(`Antal kundvagnar raderade: ${result}`);
     });
 });
-
-module.exports = router;
+ */

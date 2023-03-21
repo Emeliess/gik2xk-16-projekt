@@ -5,7 +5,9 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    payed: DataTypes.BOOLEAN,
-    total: DataTypes.DOUBLE,
+    payed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   });
 };

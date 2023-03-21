@@ -4,20 +4,20 @@ var logger = require("morgan");
 
 var app = express();
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, PUT, PATCH, POST, DELETE');
-    next();
-  });
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "*");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE");
+  next();
+});
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use("/users", require("./routes/userRoute"));
-app.use("/carts", require("./routes/cartRoute"));
 app.use("/products", require("./routes/productRoute"));
-app.use("/ratings", require("./routes/ratingRoute"));
+// app.use("/ratings", require("./routes/ratingRoute"));
 app.use("/rows", require("./routes/rowRoute"));
+app.use("/carts", require("./routes/cartRoute"));
 
 module.exports = app;

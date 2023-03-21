@@ -1,9 +1,8 @@
-const router = require("express").Router();
+/* const router = require("express").Router();
 const db = require("../models");
 const validate = require("validate.js");
 const productService = require("../services/productService");
 
-/*------------CONSTRAINTS------------- */
 const constraints = {
   rating: {
     numericality: {
@@ -23,14 +22,12 @@ router.post("/:id/addRating", (req, res) => {
   });
 });
 
-/*----------------GET--------------------------- */
 router.get("/", (req, res) => {
   db.rating.findAll().then((result) => {
     res.send(result);
   });
 });
 
-/*----------------CREATE / POST----------------- */
 router.post("/", (req, res) => {
   const body = req.body;
   const invalidData = validate(body, constraints);
@@ -42,7 +39,7 @@ router.post("/", (req, res) => {
     });
   }
 });
-/*----------------UPDATE / PUT------------------ */
+
 router.put("/", (req, res) => {
   const body = req.body;
   const invalidData = validate(body);
@@ -59,7 +56,7 @@ router.put("/", (req, res) => {
       });
   }
 });
-/*----------------DELETE / DESTROY-------------- */
+
 router.delete("/", (req, res) => {
   db.rating
     .destroy({
@@ -71,3 +68,4 @@ router.delete("/", (req, res) => {
 });
 
 module.exports = router;
+ */

@@ -5,6 +5,12 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    rating: DataTypes.DOUBLE,
+    rating: {
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+      validate: {
+        max: 10,
+      },
+    },
   });
 };

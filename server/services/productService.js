@@ -5,7 +5,8 @@ const {
   createResponseMessage,
 } = require("../helpers/responseHelper");
 const validate = require("validate.js");
-/*----------------CONSTRAINTS--------------------*/
+const userService = require("../services/userService");
+//-----CONSTRAINTS
 const constraints = {
   imageUrl: {
     url: {
@@ -13,39 +14,172 @@ const constraints = {
     },
   },
 };
-/*-----------------------------------------------*/
-/*GET BY ID */
-async function getById(id) {
+
+//Hitta productID och inkludera ratings
+/* async function getById(id) {
   try {
     const allProduct = await db.product.findOne({
       where: { id },
+      include: [db.rating],
     });
-    /*Om allt blev bra returnera allProduct.*/
     return createResponseSuccess(allProduct);
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
 }
-/*ADD RATING */
+ */
+//Hitta productID och inkludera medelvärde av ratings
+const sequelize = require("sequelize");
+async function getById(id) {
+  try {
+    const allProduct = await db.product.findOne({
+      where: { id },
+      include: [
+        {
+          model: db.rating,
+          attributes: [
+            [
+              sequelize.fn("AVG", sequelize.col("rating")),
+              "Genomsnittligt betyg",
+            ],
+          ],
+        },
+      ],
+    });
+    return createResponseSuccess(allProduct);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+
+/*LÄGGA TILL RATING PÅ PRODUKT */
 async function addRating(id, rating) {
   if (!id) {
     return createResponseError(422, "id är obligatoriskt");
   }
   try {
     rating.productId = id;
-    await db.rating.create(rating);
-    const productWithNewRating = await db.product.findOne({
-      where: { id },
-      include: [db.rating],
-    });
-    return createResponseSuccess(productWithNewRating);
+    const newRating = await db.rating.create(rating);
+    return createResponseSuccess(newRating);
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
 }
 
-/*ADD TO CART */
-async function addToCart(userId, productId, row) {
+async function addToCart(productId, userId, amount) {
+  try {
+    // Kolla om användaren redan har en cart
+    let cartId;
+    let cart = await db.cart.findOne({
+      where: { userId },
+    });
+    if (!cart) {
+      // Om användaren inte har någon cart, skapa en ny cart
+      cart = await db.cart.create({ userId });
+      cartId = cart[db.cart.primaryKeyAttribute];
+    }
+    cart = await db.cart.findOne({
+      where: { userId },
+    });
+    cartId = cart[db.cart.primaryKeyAttribute];
+    // Skapa en ny cart row med angiven amount cart och produkt
+    const row = await db.row.create({
+      amount,
+      cartId,
+      productId,
+    });
+    return {
+      success: true,
+      message: "Produkten har lagts till i varukorgen",
+      cart: await userService.getCart(userId),
+    };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+}
+
+/*----------------CRUD-------------- */
+async function getAll() {
+  try {
+    const allProduct = await db.product.findAll();
+    return createResponseSuccess(allProduct);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+/*CREATE */
+async function create(body) {
+  const invalidData = validate(body, constraints);
+  if (invalidData) {
+    return createResponseError(422, invalidData);
+  }
+  try {
+    const newProduct = await db.product.create(body);
+    return createResponseSuccess(newProduct);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+/*UPDATE */
+async function update(body, id) {
+  const invalidData = validate(body, constraints);
+  if (!id) {
+    return createResponseError(422, "id är obligatoriskt");
+  }
+  if (invalidData) {
+    return createResponseError(422, invalidData);
+  }
+  try {
+    await db.product.update(body, {
+      where: { id },
+    });
+    return createResponseMessage(200, "Produkten uppdaterades");
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+/*DESTROY */
+async function destroy(id) {
+  if (!id) {
+    return createResponseError(422, "id är obligatoriskt");
+  }
+  try {
+    await db.product.destroy({
+      where: { id },
+    });
+    return createResponseMessage(200, "Produkten raderades");
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+
+/* function _formatProduct(product) {
+  const cleanProduct = {
+    id: product.id,
+    title: product.title,
+    price: product.price,
+    description: product.description,
+    imageUrl: product.imageUrl,
+    sumRating: {
+      rating: product.rating.rating,
+    },
+  };
+  if (product.rating) {
+    cleanProduct.rating = [];
+  }
+} */
+
+module.exports = {
+  getById,
+  addRating,
+  addToCart,
+  getAll,
+  create,
+  update,
+  destroy,
+};
+
+/* async function addToCart(userId, productId, row) {
   if (!userId) {
     return createResponseError(422, "UserId är obligatoriskt");
   }
@@ -65,88 +199,4 @@ async function addToCart(userId, productId, row) {
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
-}
-
-/*----------------GET ALL-------------- */
-async function getAll() {
-  try {
-    const allProduct = await db.product.findAll({
-      include: [db.rating],
-    });
-    /*Om allt blev bra returnera allProduct.*/
-    return createResponseSuccess(allProduct);
-  } catch (error) {
-    return createResponseError(error.status, error.message);
-  }
-}
-/*----------------CREATE----------------- */
-async function create(body) {
-  const invalidData = validate(body, constraints);
-  if (invalidData) {
-    return createResponseError(422, invalidData);
-  }
-  try {
-    const newProduct = await db.product.create(body);
-    return createResponseSuccess(newProduct);
-  } catch (error) {
-    return createResponseError(error.status, error.message);
-  }
-}
-/*----------------UPDATE------------------ */
-async function update(body, id) {
-  const invalidData = validate(body, constraints);
-  if (!id) {
-    return createResponseError(422, "id är obligatoriskt");
-  }
-  if (invalidData) {
-    return createResponseError(422, invalidData);
-  }
-  try {
-    await db.product.update(body, {
-      where: { id },
-    });
-    return createResponseMessage(200, "Produkten uppdaterades");
-  } catch (error) {
-    return createResponseError(error.status, error.message);
-  }
-}
-/*----------------DESTROY-------------- */
-async function destroy(id) {
-  if (!id) {
-    return createResponseError(422, "id är obligatoriskt");
-  }
-  try {
-    await db.product.destroy({
-      where: { id },
-    });
-    return createResponseMessage(200, "Produkten raderades");
-  } catch (error) {
-    return createResponseError(error.status, error.message);
-  }
-}
-
-function _formatProduct(product) {
-  const cleanProduct = {
-    id: product.id,
-    title: product.title,
-    price: product.price,
-    description: product.description,
-    imageUrl: product.imageUrl,
-    sumRating: {
-      rating: product.rating.rating,
-    },
-  };
-  if (product.rating) {
-    cleanProduct.rating = [];
-  }
-}
-
-module.exports = {
-  getById,
-  addToCart,
-  addRating,
-  getAll,
-  create,
-  update,
-  destroy,
-};
+} */

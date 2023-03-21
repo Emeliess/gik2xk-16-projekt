@@ -1,30 +1,45 @@
 const router = require("express").Router();
 const userService = require("../services/userService");
 
-/*Get userId och cartID */
-router.get("/:userId/carts/:cartId", (req, res) => {
-  const userId = req.params.userId;
-  const cartId = req.params.cartId;
-  userService.getProductFromCart(userId, cartId).then((result) => {
+/*Get carts */
+router.get("/carts/", (req, res) => {
+  userService.getCarts().then((result) => {
     res.status(result.status).json(result.data);
   });
 });
 
-/*----------------GET--------------------------- */
+//Get cart for user ID
+router.get("/:userId/cart/", (req, res) => {
+  const userId = req.params.userId;
+  userService.getCart(userId).then((result) => {
+    res.status(result.status).json(result.data);
+  });
+});
+
+// Get userID
+router.get("/:id/", (req, res) => {
+  const id = req.params.id;
+  userService.getById(id).then((result) => {
+    res.status(result.status).json(result.data);
+  });
+});
+//-----------------------------------------------------------------
+//-----GET ALL
 router.get("/", (req, res) => {
   userService.getAll().then((result) => {
     res.status(result.status).json(result.data);
   });
 });
 
-/*----------------CREATE / POST----------------- */
+//-----CREATE
 router.post("/", (req, res) => {
   const body = req.body;
   userService.create(body).then((result) => {
     res.status(result.status).json(result.data);
   });
 });
-/*----------------UPDATE / PUT------------------ */
+
+//-----UPDATE
 router.put("/", (req, res) => {
   const body = req.body;
   const id = body.id;
@@ -32,8 +47,8 @@ router.put("/", (req, res) => {
     res.status(result.status).json(result.data);
   });
 });
-/*----------------DELETE / DESTROY-------------- */
 
+//-----DELETE
 router.delete("/", (req, res) => {
   const id = req.body.id;
   userService.destroy(id).then((result) => {
@@ -42,3 +57,10 @@ router.delete("/", (req, res) => {
 });
 
 module.exports = router;
+
+/* router.get("/:userId/cartContent/", (req, res) => {
+  const userId = req.params.userId;
+  userService.getCartContent(userId).then((result) => {
+    res.status(result.status).json(result.data);
+  });
+}); */

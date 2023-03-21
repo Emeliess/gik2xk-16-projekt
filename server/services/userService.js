@@ -9,12 +9,30 @@ const validate = require("validate.js");
 const constraints = {
   eMail: {
     email: {
-      message: "^Du måste ange en giltig mejladress",
+      message: "^Ange en giltig mejladress",
     },
   },
 };
-/*-----------------------------------------------*/
 
+//Get userID with carts and cartrows
+async function getById(id) {
+  try {
+    const oneUser = await db.user.findOne({
+      where: { id },
+      include: [
+        {
+          model: db.cart,
+          include: [db.row],
+        },
+      ],
+    });
+    return createResponseSuccess(oneUser);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+
+//-----GET ALL
 async function getAll() {
   try {
     const allUser = await db.user.findAll();
@@ -24,7 +42,7 @@ async function getAll() {
     return createResponseError(error.status, error.message);
   }
 }
-/*----------------CREATE----------------- */
+//-----CREATE
 async function create(body) {
   const invalidData = validate(body, constraints);
   if (invalidData) {
@@ -37,7 +55,7 @@ async function create(body) {
     return createResponseError(error.status, error.message);
   }
 }
-/*----------------UPDATE------------------ */
+//-----UPDATE
 async function update(body, id) {
   const invalidData = validate(body, constraints);
   if (!id) {
@@ -55,7 +73,7 @@ async function update(body, id) {
     return createResponseError(error.status, error.message);
   }
 }
-/*----------------DESTROY-------------- */
+//-----DESTROY
 async function destroy(id) {
   if (!id) {
     return createResponseError(422, "id är obligatoriskt");
@@ -70,4 +88,54 @@ async function destroy(id) {
   }
 }
 
-module.exports = { getAll, create, update, destroy };
+module.exports = {
+  getAll,
+  getById,
+  create,
+  update,
+  getCart,
+  destroy,
+};
+
+/*GET CART ( ANVÄNDS EJ )*/
+async function getCart(userId) {
+  try {
+    //const cart = await db.cart.findPk(userId);
+    //let cart = await db.cart.id({ where: { userId } });
+    //console.log(`value in getCart for userId is ${userId} `);
+    const cartId = await db.cart.findOne({
+      where: { userId },
+      //include: [db.cart],
+      attributes: ["id"],
+    });
+    //console.log(`value in getCart for cartId is ${cartId} `);
+    /*Om allt blev bra returnera allUser.*/
+    return createResponseSuccess(cartId);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+
+/*GET CART CONTENT FOR USER*/
+/* async function getCartContent(userId) {
+  try {
+    const id = await getCart(userId);
+    const content = await db.row.findOne({
+      where: { id },
+      attributes: ["productId"],
+    });
+    return createResponseSuccess(content);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+} */
+
+/*GET ALL CARTS*/
+/* async function getCarts(userId) {
+  try {
+    const carts = await db.cart.findAll();
+    return createResponseSuccess(carts);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+} */
