@@ -28,7 +28,7 @@ async function getById(id) {
           attributes: [
             [
               sequelize.fn("AVG", sequelize.col("rating")),
-              "Genomsnittligt betyg",
+              "AverageRating",
             ],
           ],
         },
