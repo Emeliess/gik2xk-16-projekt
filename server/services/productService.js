@@ -18,6 +18,7 @@ const constraints = {
 
 //-----HITTA PRODUKT_ID OCH INKLUDERA MEDELVÄRDE AV BETYG
 const sequelize = require("sequelize");
+const { async } = require("validate.js");
 async function getById(id) {
   try {
     const allProduct = await db.product.findOne({
@@ -28,7 +29,7 @@ async function getById(id) {
           attributes: [
             [
               sequelize.fn("AVG", sequelize.col("rating")),
-              "Genomsnittligt betyg",
+              "AverageRating",
             ],
           ],
         },
@@ -142,6 +143,21 @@ async function destroy(id) {
   }
 }
 
+//-----GET RATINGS FOR PRODUCTS
+async function getRatings(id) {
+  if (!id) {
+    return createResponseError(422, "id är obligatoriskt");
+  }
+  try {
+    let result = await db.rating.findAll({
+      where: { productId: id },
+    });
+    return createResponseSuccess(result);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+
 /* function _formatProduct(product) {
   const cleanProduct = {
     id: product.id,
@@ -166,6 +182,7 @@ module.exports = {
   create,
   update,
   destroy,
+  getRatings
 };
 
 //Hitta productID och inkludera ratings

@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import Image from "react-bootstrap/Image";
 import { BsStar, BsStarFill } from "react-icons/bs";
-import { getOne, getProductRating, setProductRating } from "../services/productService";
+import { getOne, getProductRatings, setProductRating } from "../services/productService";
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../App";
 import Dropdown from "react-bootstrap/Dropdown"
@@ -12,15 +12,17 @@ function ProductDetail() {
   const id = params.id;
 
   const [product, setProduct] = useState([]);
-  const [rating, setRating] = useState([]);
+  const [rating, setRating] = useState(0);
   const { cart, setCart } = useContext(CartContext);
+  const [ratings, setRatings] = useState([]);
 
   useEffect(() => {
-    getOne(id).then((result) => setProduct(result));
-  }, [id]);
-
-  useEffect(() => {
-    getProductRating(id).then(result => setRating(result));
+    getOne(id).then((result) => {
+      setProduct(result);
+      if(result.ratings.length > 0) {
+        setRating(result.ratings[0].AverageRating);
+      }
+    });
   }, [id]);
 
   function addProductToCart() {
@@ -28,19 +30,18 @@ function ProductDetail() {
     setCart(cart);
   }
 
+  useEffect(() => {
+    getProductRatings(id).then(result => {
+      console.log(result)
+      setRatings(result);
+    })
+  }, [id])
+
   function getRating() {
     let stars = [];
-    let count = 0;
-    let totalRating = 0;
-    rating.forEach(r => {
-      count += 1;
-      totalRating += r.rating;
-    });
-
-    totalRating = totalRating / count;
 
     for (let i = 1; i <= 5; i++) {
-      if (totalRating >= i) {
+      if (rating >= i) {
         stars.push(<BsStarFill />);
       } else {
         stars.push(<BsStar />);
