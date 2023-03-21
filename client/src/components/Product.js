@@ -27,10 +27,7 @@ function Product({ product }) {
             <div className="App-link">...visa mer</div>
           </LinkContainer>
         </Card.Text>
-        <Button
-          variant="success"
-          onClick={addProductToCart}
-        >
+        <Button variant="success" onClick={addProductToCart}>
           Lägg till i kundvagn
         </Button>
       </Card.Body>
