@@ -6,6 +6,7 @@ const {
 } = require("../helpers/responseHelper");
 const validate = require("validate.js");
 const userService = require("../services/userService");
+
 //-----CONSTRAINTS
 const constraints = {
   imageUrl: {
@@ -28,7 +29,8 @@ const constraints = {
   }
 }
  */
-//Hitta productID och inkludera medelvärde av ratings
+
+//-----HITTA PRODUKT_ID OCH INKLUDERA MEDELVÄRDE AV BETYG
 const sequelize = require("sequelize");
 async function getById(id) {
   try {
@@ -52,7 +54,7 @@ async function getById(id) {
   }
 }
 
-/*LÄGGA TILL RATING PÅ PRODUKT */
+//-----LÄGGA TILL BETYG PÅ PRODUKT
 async function addRating(id, rating) {
   if (!id) {
     return createResponseError(422, "id är obligatoriskt");
@@ -65,7 +67,7 @@ async function addRating(id, rating) {
     return createResponseError(error.status, error.message);
   }
 }
-
+//-----SKAPA RADER I VARUKORGEN
 async function addToCart(productId, userId, amount) {
   try {
     // Kolla om användaren redan har en cart
@@ -88,17 +90,13 @@ async function addToCart(productId, userId, amount) {
       cartId,
       productId,
     });
-    return {
-      success: true,
-      message: "Produkten har lagts till i varukorgen",
-      cart: await userService.getCart(userId),
-    };
+    return createResponseMessage(200, "Produkten lades till i varukorgen");
   } catch (error) {
-    return { success: false, message: error.message };
+    return createResponseError(error.status, error.message);
   }
 }
 
-/*----------------CRUD-------------- */
+//-----GET ALL
 async function getAll() {
   try {
     const allProduct = await db.product.findAll();
@@ -107,7 +105,8 @@ async function getAll() {
     return createResponseError(error.status, error.message);
   }
 }
-/*CREATE */
+
+//-----CREATE
 async function create(body) {
   const invalidData = validate(body, constraints);
   if (invalidData) {
@@ -120,7 +119,8 @@ async function create(body) {
     return createResponseError(error.status, error.message);
   }
 }
-/*UPDATE */
+
+//-----UPDATE
 async function update(body, id) {
   const invalidData = validate(body, constraints);
   if (!id) {
@@ -138,7 +138,8 @@ async function update(body, id) {
     return createResponseError(error.status, error.message);
   }
 }
-/*DESTROY */
+
+//-----DELETE
 async function destroy(id) {
   if (!id) {
     return createResponseError(422, "id är obligatoriskt");

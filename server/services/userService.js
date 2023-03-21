@@ -14,7 +14,7 @@ const constraints = {
   },
 };
 
-//Get userID with carts and cartrows
+//-----HITTA USER_ID OCH VISA VARUKORG MED INNEHÅLL
 async function getById(id) {
   try {
     const oneUser = await db.user.findOne({
@@ -93,12 +93,11 @@ module.exports = {
   getById,
   create,
   update,
-  getCart,
   destroy,
 };
 
 /*GET CART ( ANVÄNDS EJ )*/
-async function getCart(userId) {
+/* async function getCart(userId) {
   try {
     //const cart = await db.cart.findPk(userId);
     //let cart = await db.cart.id({ where: { userId } });
@@ -109,12 +108,12 @@ async function getCart(userId) {
       attributes: ["id"],
     });
     //console.log(`value in getCart for cartId is ${cartId} `);
-    /*Om allt blev bra returnera allUser.*/
+    //Om allt blev bra returnera allUser.
     return createResponseSuccess(cartId);
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
-}
+} */
 
 /*GET CART CONTENT FOR USER*/
 /* async function getCartContent(userId) {
