@@ -39,7 +39,7 @@ function Administration() {
                 <Form.Label>Bild-URL</Form.Label>
                 <Form.Control type="text" name="imageUrl" />
               </Form.Group>
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="secondary">
                 Lägg till produkt
               </Button>
             </Form>

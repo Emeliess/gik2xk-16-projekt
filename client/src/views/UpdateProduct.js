@@ -78,7 +78,7 @@ function UpdateProduct() {
             onChange={onValueChanged}
           />
         </Form.Group>
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="secondary">
           Uppdatera produkt
         </Button>
       </Form>

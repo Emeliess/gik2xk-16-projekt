@@ -4,6 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { CartContext } from "../App";
 import { useContext } from "react";
 
+
 function Product({ product }) {
   // eslint-disable-next-line
   const { cart, setCart } = useContext(CartContext);
@@ -14,6 +15,7 @@ function Product({ product }) {
   }
 
   return (
+    <div className="mb-5">
     <Card style={{ width: "18rem" }}>
       <Card.Img variant="top" src={product.imageUrl} />
       <Card.Body>
@@ -32,7 +34,7 @@ function Product({ product }) {
           Lägg till i kundvagn
         </Button>
       </Card.Body>
-    </Card>
+    </Card></div>
   );
 }
 

@@ -6,6 +6,7 @@ import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../App";
 import Dropdown from "react-bootstrap/Dropdown"
 import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/esm/Container";
 
 function ProductDetail() {
   const params = useParams();
@@ -57,23 +58,24 @@ function ProductDetail() {
 
   return (
     <>
+    <Container className="rounded mt-2 mb-5">
       <Image
         rounded="true"
-        fluid="true"
-        width="400px"
+        height="300px"
         src={product.imageUrl}
       ></Image>
-      <h2>{product.title}</h2>
+      <h3>{product.title}</h3>
       <p>{product.description}</p>
       <p>{product.price} kr</p>
-      {getRating()}
+      <p>{getRating()}</p>
+      
       <Button variant="success" onClick={addProductToCart}>
         Lägg till i kundvagn
       </Button>
 
-      <h3>Lämna betyg på produkt</h3>
+      <h4>Lämna betyg på produkt</h4>
       <Dropdown>
-        <Dropdown.Toggle variant="success" id="dropdown-basic">
+        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
           Betyg
         </Dropdown.Toggle>
 
@@ -115,8 +117,21 @@ function ProductDetail() {
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
+
+      <p>Tidigare betyg</p>
+      {ratings &&
+            ratings.map((r) => {
+              return (
+                <>
+                  <p><b>{r.rating}</b></p>
+                
+                </>
+              );
+            })}
+            </Container>
     </>
   );
 }
+
 
 export default ProductDetail;

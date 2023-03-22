@@ -14,7 +14,8 @@ function Products() {
 
   return (
     <>
-      <h2>Produkter</h2>
+
+      <div className="m-5 text-center "><h3>VÅRA FRUKTER</h3></div>
       <Container>
         <Row>
           {products &&
