@@ -39,7 +39,6 @@ function ProductDetail() {
 
   useEffect(() => {
     getProductRatings(id).then((result) => {
-      console.log(result);
       setRatings(result);
     });
   }, [id]);
@@ -59,16 +58,17 @@ function ProductDetail() {
   }
 
   async function postRating(rating) {
-    await setProductRating(id, rating);
+    const newRating = await setProductRating(id, rating);
+    setRatings([...ratings, newRating]);
   }
 
   return (
     <>
-      <Container className="rounded mt-2 mb-5">
+      <Container className="mt-2 mb-5 shadow-lg p-3 mb-5 bg-white rounded">
         <Row>
           <Col>
-          <Image rounded="true" height="300px" src={product.imageUrl}></Image>
-          <h3>{product.title}</h3>
+          <Image className="shadow-lg" rounded="true" height="300px" src={product.imageUrl}></Image>
+          <h3 className="mt-2">{product.title}</h3>
           <p>{product.description}</p>
           <p>{product.price} kr</p>
           <p>{getRating(rating)}</p>
@@ -79,7 +79,7 @@ function ProductDetail() {
           </Col>
 
           <Col>
-          <h4>Lämna betyg på produkt</h4>
+          <h5>Lämna betyg på produkt</h5>
           <Dropdown>
             <Dropdown.Toggle variant="light" id="dropdown-basic">
               Betyg
@@ -124,12 +124,11 @@ function ProductDetail() {
             </Dropdown.Menu>
           </Dropdown>
 
-          <h4>Tidigare betyg</h4>
+          <h5 className="mt-5 pt-5 border-top border-dark">Tidigare betyg</h5>
           {ratings &&
             ratings.map((r) => {
               return (
                 <>
-                  <p></p>
                   <p>
                     {formatDate(r.createdAt)} <b>{getRating(r.rating)}</b>
                   </p>

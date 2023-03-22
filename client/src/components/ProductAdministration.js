@@ -17,7 +17,7 @@ function ProductAdministration({ product }) {
           </LinkContainer>
         </Card.Text>
         <LinkContainer to={"/uppdateraProdukt/" + product.id}>
-          <Button variant="secondary">Uppdatera</Button>
+          <Button variant="success">Uppdatera</Button>
         </LinkContainer>
         <Button className="m-2" onClick={() => deleteProduct(product.id)} variant="danger">
           Ta bort

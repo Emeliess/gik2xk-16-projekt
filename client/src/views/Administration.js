@@ -16,6 +16,15 @@ function Administration() {
     getAll().then((result) => setProducts(result));
   }, []);
 
+  async function createProduct(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const product = Object.fromEntries(formData.entries());
+    
+    const newProduct = await create(product);
+    setProducts([...products, newProduct]);
+  }
+
   return (
     <>
       <Accordion>
@@ -39,7 +48,7 @@ function Administration() {
                 <Form.Label>Bild-URL</Form.Label>
                 <Form.Control type="text" name="imageUrl" />
               </Form.Group>
-              <Button type="submit" variant="secondary">
+              <Button type="submit" variant="success">
                 Lägg till produkt
               </Button>
             </Form>
@@ -67,14 +76,6 @@ function Administration() {
       </Accordion>
     </>
   );
-}
-
-async function createProduct(e) {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  const product = Object.fromEntries(formData.entries());
-
-  await create(product);
 }
 
 export default Administration;
