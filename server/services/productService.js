@@ -27,10 +27,7 @@ async function getById(id) {
         {
           model: db.rating,
           attributes: [
-            [
-              sequelize.fn("AVG", sequelize.col("rating")),
-              "AverageRating",
-            ],
+            [sequelize.fn("AVG", sequelize.col("rating")), "AverageRating"],
           ],
         },
       ],
@@ -182,7 +179,7 @@ module.exports = {
   create,
   update,
   destroy,
-  getRatings
+  getRatings,
 };
 
 //Hitta productID och inkludera ratings
