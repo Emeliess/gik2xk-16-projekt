@@ -4,6 +4,7 @@ const router = require("express").Router();
 const db = require("../models");
 const validate = require("validate.js");
 const productService = require("../services/productService");
+const sequelize = require("sequelize");
 
 const constraints = {
   rating: {
@@ -21,18 +22,44 @@ router.get("/", (req, res) => {
   });
 });
 
-/*
-router.post("/:id/addRating", (req, res) => {
-  const rating = req.body;
-  const id = req.params.id;
+/* router.get("/getRating/", (req, res) => {
+  const productId = req.body;
+  console.log(productId);
+  db.rating
+    .findAll({
+      where: {
+        productId: productId,
+      },
+      attributes: ["rating"],
+    })
+    .then((result) => {
+      res.send(result);
+    });
+}); */
 
+router.post("/", (req, res) => {
+  const rating = req.body.rating;
+  const id = req.body.productId;
   productService.addRating(id, rating).then((result) => {
     res.status(result.status).json(result.data);
   });
 });
 
+router.get("/averageRating/", (req, res) => {
+  db.rating
+    .findAll({
+      attributes: [[sequelize.fn("AVG", sequelize.col("rating")), "avgRating"]],
+    })
+    .then((result) => {
+      const avgRating = result[0].dataValues.avgRating;
+      res.send({ avgRating });
+    })
+    .catch((error) => {
+      res.status(error.status).json(error.message);
+    });
+});
 
-
+/*
 router.get("/:id", (req, res) => {
   let id = req.params.id;
   db.rating.findAll({ where: { productId : id }}).then((result) => {

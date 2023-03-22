@@ -3,13 +3,32 @@ const productService = require("../services/productService");
 const db = require("../models");
 
 //-----LÄGGA TILL BETYG PÅ PRODUKT
-router.post("/addRatings", (req, res) => {
+
+router.post("/:id/addRating", (req, res) => {
   const rating = req.body.rating;
-  const id = req.body.id;
+  const id = req.body.productId;
   productService.addRating(id, rating).then((result) => {
     res.status(result.status).json(result.data);
   });
 });
+
+// Denna funktionen behöver vara kommenterad just nu pga att productId som skickas
+// från frontend har ett nullvärde (undefined) och då kraschar servern.
+
+/* router.get("/:id/ratings/", (req, res) => {
+  const productId = req.body.productId;
+  console.log(productId);
+  db.rating
+    .findAll({
+      where: {
+        productId: productId,
+      },
+      attributes: ["rating"],
+    })
+    .then((result) => {
+      res.send(result);
+    });
+}); */
 
 //-----HITTA PRODUKT_ID
 router.get("/:id/", (req, res) => {

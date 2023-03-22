@@ -38,9 +38,7 @@ function UpdateProduct() {
 
   return (
     <>
-      <Form
-        onSubmit={updateProduct}
-      >
+      <Form onSubmit={updateProduct}>
         <Form.Group className="mb-3">
           <Form.Label>Titel</Form.Label>
           <Form.Control
@@ -78,7 +76,7 @@ function UpdateProduct() {
             onChange={onValueChanged}
           />
         </Form.Group>
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="success">
           Uppdatera produkt
         </Button>
       </Form>

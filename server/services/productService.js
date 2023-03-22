@@ -42,18 +42,19 @@ async function getById(id) {
 }
 
 //-----LÄGGA TILL BETYG PÅ PRODUKT
-async function addRating(id, rating) {
-  console.log(id);
-  console.log(rating);
+async function addRating(id, ratingValue) {
+  //console.log(id);
+  //console.log(rating);
   if (!id) {
     return createResponseError(422, "id är obligatoriskt");
   }
   try {
-    rating.productId = id;
-    console.log(rating.rating);
-    console.log(rating.productId);
-    console.log(rating);
-    const newRating = await db.rating.create(rating);
+    //rating.productId = id;
+    const ratingObject = { productId: id, rating: ratingValue };
+    //console.log(rating.rating);
+    //console.log(rating.productId);
+    //console.log(rating);
+    const newRating = await db.rating.create(ratingObject);
     return createResponseSuccess(newRating);
   } catch (error) {
     return createResponseError(error.status, error.message);
