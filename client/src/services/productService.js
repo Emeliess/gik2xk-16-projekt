@@ -36,8 +36,26 @@ export async function getProductRating(id) {
   return result.data;
 }
 
+/* export async function setProductRating(id, rating) {
+        const result = await api.post("/products/"+ id + "/addRating", {rating});
+
+  return result.data;
+}
+ */
 export async function setProductRating(id, rating) {
   const result = await api.post("/ratings", { productId: id, rating: rating });
 
   return result.data;
+}
+
+export async function addProductToCart(id) {
+  const result = await api.post("/carts", id);
+
+  return result.data;
+}
+
+export async function getCart() {
+  const products = await api.get("/carts");
+
+  return products.data;
 }

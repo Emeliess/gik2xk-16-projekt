@@ -3,27 +3,12 @@ const productService = require("../services/productService");
 const db = require("../models");
 
 //-----LÄGGA TILL BETYG PÅ PRODUKT
-router.post("/:id/addRating", (req, res) => {
-  const rating = req.body;
-  const id = req.params.id;
+router.post("/addRatings", (req, res) => {
+  const rating = req.body.rating;
+  const id = req.body.id;
   productService.addRating(id, rating).then((result) => {
     res.status(result.status).json(result.data);
   });
-});
-
-//-----LÄGG TILL PRODUKT I VARUKORG
-router.post("/addToCart/:userId", async (req, res) => {
-  const { userId } = req.params;
-  const { productId, amount } = req.body;
-  productService.addToCart(productId, userId, amount).then((result) => {
-    res.status(result.status).json(result.data);
-  });
-  /*   const result = await productService.addToCart(productId, userId, amount);
-  if (result.success) {
-    res.status(200).json(result);
-  } else {
-    res.status(400).json(result);
-  } */
 });
 
 //-----HITTA PRODUKT_ID
@@ -34,12 +19,19 @@ router.get("/:id/", (req, res) => {
   });
 });
 
-//-----GET ALL
+//-----GET ALL PRODUCTS
 router.get("/", (req, res) => {
   productService.getAll().then((result) => {
     res.status(result.status).json(result.data);
   });
 });
+
+//-----GET CART CONTENT
+/* router.get("/getCart/", (req, res) => {
+  productService.getCart().then((result) => {
+    res.status(result.status).json(result.data);
+  });
+}); */
 
 //-----CREATE
 router.post("/", (req, res) => {
@@ -58,6 +50,17 @@ router.put("/", (req, res) => {
 });
 
 //-----DELETE
+router.delete("/:id", (req, res) => {
+  db.product
+    .destroy({
+      where: { id: req.params.id },
+    })
+    .then((result) => {
+      res.json(`Antal produkter raderade: ${result}`);
+    });
+});
+
+/* //-----DELETE
 router.delete("/", (req, res) => {
   db.product
     .destroy({
@@ -66,7 +69,7 @@ router.delete("/", (req, res) => {
     .then((result) => {
       res.json(`Antal produkter raderade: ${result}`);
     });
-});
+}); */
 
 module.exports = router;
 

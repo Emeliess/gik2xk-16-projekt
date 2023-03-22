@@ -11,7 +11,7 @@ const StoreNav = () => {
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
         <LinkContainer to="/">
-          <Navbar.Brand href="#home">Emelies & Jeanette's shop</Navbar.Brand>
+          <Navbar.Brand href="#home">E&J'S FRUITS</Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

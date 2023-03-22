@@ -1,6 +1,6 @@
 //-----DENNA ROUTE ANVÄNDS EJ. ENBART FÖR TEST
 
-/* const router = require("express").Router();
+const router = require("express").Router();
 const db = require("../models");
 const validate = require("validate.js");
 const productService = require("../services/productService");
@@ -15,6 +15,13 @@ const constraints = {
   },
 };
 
+router.get("/", (req, res) => {
+  db.rating.findAll().then((result) => {
+    res.send(result);
+  });
+});
+
+/*
 router.post("/:id/addRating", (req, res) => {
   const rating = req.body;
   const id = req.params.id;
@@ -24,11 +31,7 @@ router.post("/:id/addRating", (req, res) => {
   });
 });
 
-router.get("/", (req, res) => {
-  db.rating.findAll().then((result) => {
-    res.send(result);
-  });
-});
+
 
 router.get("/:id", (req, res) => {
   let id = req.params.id;
@@ -75,6 +78,5 @@ router.delete("/", (req, res) => {
       res.json(`Antal betyg raderade: ${result}`);
     });
 });
-
+*/
 module.exports = router;
- */

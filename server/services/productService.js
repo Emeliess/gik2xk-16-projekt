@@ -43,11 +43,16 @@ async function getById(id) {
 
 //-----LÄGGA TILL BETYG PÅ PRODUKT
 async function addRating(id, rating) {
+  console.log(id);
+  console.log(rating);
   if (!id) {
     return createResponseError(422, "id är obligatoriskt");
   }
   try {
     rating.productId = id;
+    console.log(rating.rating);
+    console.log(rating.productId);
+    console.log(rating);
     const newRating = await db.rating.create(rating);
     return createResponseSuccess(newRating);
   } catch (error) {
@@ -55,28 +60,31 @@ async function addRating(id, rating) {
   }
 }
 
-//-----LÄGG TILL PRODUKT I VARUKORG
-async function addToCart(productId, userId, amount) {
+/* //-----LÄGGA TILL BETYG PÅ PRODUKT
+async function addRating(id, rating) {
+  console.log(id);
+  console.log(rating);
+  if (!id) {
+    return createResponseError(422, "id är obligatoriskt");
+  }
   try {
-    // Kolla om användaren redan har en cart
-    let cartId;
-    let cart = await db.cart.findOne({
-      where: { userId },
-    });
-    if (!cart) {
-      // Om användaren inte har någon cart, skapa en ny cart
-      cart = await db.cart.create({ userId });
-      cartId = cart[db.cart.primaryKeyAttribute];
-    }
-    cart = await db.cart.findOne({
-      where: { userId },
-    });
-    cartId = cart[db.cart.primaryKeyAttribute];
-    // Skapa en ny cart row med angiven amount cart och produkt
-    const row = await db.row.create({
-      amount,
-      cartId,
+    rating.productId = id;
+    console.log(rating.rating);
+    console.log(rating.productId);
+    const newRating = await db.rating.create(rating);
+    return createResponseSuccess(newRating);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+} */
+
+//-----LÄGG TILL PRODUKT I VARUKORG
+async function addToCart(productId) {
+  try {
+    //console.log(productId);
+    await db.cart.create({
       productId,
+      //amount,
     });
     return createResponseMessage(200, "Produkten lades till i varukorgen");
   } catch (error) {
@@ -84,10 +92,30 @@ async function addToCart(productId, userId, amount) {
   }
 }
 
-//-----GET ALL
+//-----GET ALL PRODUCTS
 async function getAll() {
   try {
     const allProduct = await db.product.findAll();
+    return createResponseSuccess(allProduct);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+
+//-----GET ALL PRODUCTS
+async function getCart() {
+  try {
+    const cart = await db.cart.findAll();
+    return createResponseSuccess(cart);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+
+//-----GET CART CONTENT
+async function getCart() {
+  try {
+    const allProduct = await db.cart.findAll();
     return createResponseSuccess(allProduct);
   } catch (error) {
     return createResponseError(error.status, error.message);
@@ -163,6 +191,7 @@ module.exports = {
   addRating,
   addToCart,
   getAll,
+  getCart,
   create,
   update,
   destroy,
@@ -199,6 +228,35 @@ module.exports = {
       include: [db.cartRow],
     });
     return createResponseSuccess(newCart);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+} */
+
+//-----LÄGG TILL PRODUKT I VARUKORG
+/* async function addToCart(productId, userId, amount) {
+  try {
+    // Kolla om användaren redan har en cart
+    let cartId;
+    let cart = await db.cart.findOne({
+      where: { userId },
+    });
+    if (!cart) {
+      // Om användaren inte har någon cart, skapa en ny cart
+      cart = await db.cart.create({ userId });
+      cartId = cart[db.cart.primaryKeyAttribute];
+    }
+    cart = await db.cart.findOne({
+      where: { userId },
+    });
+    cartId = cart[db.cart.primaryKeyAttribute];
+    // Skapa en ny cart row med angiven amount cart och produkt
+    const row = await db.row.create({
+      amount,
+      cartId,
+      productId,
+    });
+    return createResponseMessage(200, "Produkten lades till i varukorgen");
   } catch (error) {
     return createResponseError(error.status, error.message);
   }

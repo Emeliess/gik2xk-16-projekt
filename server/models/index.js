@@ -20,7 +20,6 @@ if (config.use_env_variable) {
     config
   );
 }
-
 fs.readdirSync(__dirname)
   .filter((file) => {
     return (
@@ -45,21 +44,12 @@ Object.keys(db).forEach((modelName) => {
 });
 
 //-----MODELL ASSOCIATIONER
-db.cart.belongsTo(db.user, { foreignKey: { allowNull: false } });
-db.user.hasMany(db.cart, {
+db.cart.belongsTo(db.product);
+db.product.hasMany(db.cart, {
   allowNull: false,
   onDelete: "CASCADE",
 });
-db.row.belongsTo(db.cart);
-db.cart.hasMany(db.row, {
-  allowNull: false,
-  onDelete: "CASCADE",
-});
-db.row.belongsTo(db.product);
-db.product.hasMany(db.row, {
-  allowNull: false,
-  onDelete: "CASCADE",
-});
+
 db.rating.belongsTo(db.product);
 db.product.hasMany(db.rating, {
   allowNull: false,

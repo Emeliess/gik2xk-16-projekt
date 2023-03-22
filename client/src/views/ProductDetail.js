@@ -1,11 +1,16 @@
 import { useParams } from "react-router-dom";
 import Image from "react-bootstrap/Image";
 import { BsStar, BsStarFill } from "react-icons/bs";
-import { getOne, getProductRating, setProductRating } from "../services/productService";
+import {
+  getOne,
+  getProductRating,
+  setProductRating,
+} from "../services/productService";
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../App";
-import Dropdown from "react-bootstrap/Dropdown"
+import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
+import { addProductToCart as addToCartApi } from "../services/productService";
 
 function ProductDetail() {
   const params = useParams();
@@ -20,19 +25,27 @@ function ProductDetail() {
   }, [id]);
 
   useEffect(() => {
-    getProductRating(id).then(result => setRating(result));
+    getProductRating(id).then((result) => setRating(result));
   }, [id]);
 
-  function addProductToCart() {
+  async function addProductToCart() {
+    try {
+      await addToCartApi(product.id);
+      //setCart([...cart, product]);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  /*   function addProductToCart() {
     cart.push(product);
     setCart(cart);
-  }
+  } */
 
   function getRating() {
     let stars = [];
     let count = 0;
     let totalRating = 0;
-    rating.forEach(r => {
+    rating.forEach((r) => {
       count += 1;
       totalRating += r.rating;
     });
@@ -46,7 +59,7 @@ function ProductDetail() {
         stars.push(<BsStar />);
       }
     }
-  
+
     return stars;
   }
 

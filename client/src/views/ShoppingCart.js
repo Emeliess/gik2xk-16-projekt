@@ -1,29 +1,59 @@
-import { useContext, useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { CartContext } from "../App";
+import { getCart as getCartApi } from "../services/productService";
+import { getOne as getOneApi } from "../services/productService";
 
 function ShoppingCart() {
   // eslint-disable-next-line
-  const { cart, setCart } = useContext(CartContext);
-    // eslint-disable-next-line
-  const [ products, setProducts ] = useState([]);
-  const count = {};
-  let totalPrice = 0;
-  
-  // Loopar igenom varje produkt i kundvagnen
-  // Om produktens id redan finns i "count" plussas antalet upp med 1
-  // om inte läggs produktens id till i count med värdet 1.
-  cart.forEach(p => {
-    count[p.id] = count[p.id] ? count[p.id] + 1 : 1;
-  });
+  //const { cart, setCart } = useContext(CartContext);
+  // eslint-disable-next-line
+  const [products, setProducts] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  for(const key in count) {
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getCartApi();
+      const productsWithCount = data.map(async ({ productId, count }) => {
+        const product = await getOneApi(productId);
+        return {
+          ...product,
+          count,
+        };
+      });
+      const products = await Promise.all(productsWithCount);
+      setProducts(products);
+
+      const total = products.reduce((acc, product) => {
+        return acc + product.price * product.count;
+      }, 0);
+      setTotalPrice(total);
+    };
+    fetchData();
+  }, []);
+
+  /*   function ShoppingCart() {
     // eslint-disable-next-line
-    let p = cart.find(pp => pp.id == key);
-    p.count = count[key];
-    products.push(p);
-    totalPrice += p.count * p.price;
-  };
+    const { cart, setCart } = useContext(CartContext);
+      // eslint-disable-next-line
+    const [ products, setProducts ] = useState([]);
+    const count = {};
+    let totalPrice = 0;
+    
+    // Loopar igenom varje produkt i kundvagnen
+    // Om produktens id redan finns i "count" plussas antalet upp med 1
+    // om inte läggs produktens id till i count med värdet 1.
+    cart.forEach(p => {
+      count[p.id] = count[p.id] ? count[p.id] + 1 : 1;
+    });
+  
+    for(const key in count) {
+      // eslint-disable-next-line
+      let p = cart.find(pp => pp.id == key);
+      p.count = count[key];
+      products.push(p);
+      totalPrice += p.count * p.price;
+    }; */
 
   return (
     <>
