@@ -31,13 +31,13 @@ export async function deleteProduct(id) {
 }
 
 export async function getProductRatings(id) {
-  const result = await api.get("/ratings/" + id);
+    const result = await api.get("products/"+ id + "/ratings");
 
   return result.data;
 }
 
 export async function setProductRating(id, rating) {
-  const result = await api.post("/ratings", { productId: id, rating: rating });
+        const result = await api.post("/products/"+ id + "/addRating", {rating});
 
   return result.data;
 }
