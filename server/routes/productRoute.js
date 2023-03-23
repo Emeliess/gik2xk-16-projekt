@@ -40,7 +40,7 @@ router.get("/:id/ratings/", (req, res) => {
       where: {
         productId: productId,
       },
-      attributes: ["rating"],
+      //attributes: ["rating"],
     })
     .then((result) => {
       res.send(result);
