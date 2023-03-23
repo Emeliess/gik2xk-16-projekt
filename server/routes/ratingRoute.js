@@ -6,16 +6,6 @@ const validate = require("validate.js");
 const productService = require("../services/productService");
 const sequelize = require("sequelize");
 
-const constraints = {
-  rating: {
-    numericality: {
-      greaterThanOrEqualTo: 1,
-      lessThanOrEqualTo: 10,
-      message: "^Ange ett betyg från 1-10",
-    },
-  },
-};
-
 router.get("/", (req, res) => {
   db.rating.findAll().then((result) => {
     res.send(result);

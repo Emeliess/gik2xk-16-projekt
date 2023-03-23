@@ -5,7 +5,6 @@ const {
   createResponseMessage,
 } = require("../helpers/responseHelper");
 const validate = require("validate.js");
-const userService = require("../services/userService");
 
 //-----CONSTRAINTS
 const constraints = {
@@ -26,10 +25,7 @@ async function getById(id) {
         {
           model: db.rating,
           attributes: [
-            [
-              sequelize.fn("AVG", sequelize.col("rating")),
-              "Genomsnittligt betyg",
-            ],
+            [sequelize.fn("AVG", sequelize.col("rating")), "AverageRating"],
           ],
         },
       ],

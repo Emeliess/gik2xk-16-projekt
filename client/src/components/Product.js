@@ -3,10 +3,10 @@ import Card from "react-bootstrap/Card";
 import { LinkContainer } from "react-router-bootstrap";
 import { CartContext } from "../App";
 import { useContext } from "react";
-
 import { addProductToCart as addToCartApi } from "../services/productService";
 
 function Product({ product }) {
+  // eslint-disable-next-line
   const { cart, setCart } = useContext(CartContext);
 
   async function addProductToCart() {

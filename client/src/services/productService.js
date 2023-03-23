@@ -30,28 +30,17 @@ export async function deleteProduct(id) {
   return result.data;
 }
 
-// Denna funktionen skickar för tillfället in "undefined" som id.
-// Behöver åtgärdas så den skickar produktIDt
-export async function getProductRating(id) {
+export async function getProductRatings(id) {
   const result = await api.get("products/" + id + "/ratings");
 
   return result.data;
 }
 
 export async function setProductRating(id, rating) {
-  const result = await api.post("/products/" + id + "/addRating", {
-    productId: id,
-    rating: rating,
-  });
+  const result = await api.post("/products/" + id + "/addRating", { rating });
 
   return result.data;
 }
-
-/* export async function setProductRating(id, rating) {
-  const result = await api.post("/ratings", { productId: id, rating: rating });
-
-  return result.data;
-} */
 
 export async function addProductToCart(id) {
   const result = await api.post("/carts", id);

@@ -8,9 +8,6 @@ module.exports = (sequelize, DataTypes) => {
     rating: {
       type: DataTypes.DOUBLE,
       allowNull: false,
-      validate: {
-        max: 10,
-      },
     },
   });
 };

@@ -3,24 +3,24 @@ import Image from "react-bootstrap/Image";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import {
   getOne,
-  getProductRating,
+  getProductRatings,
   setProductRating,
 } from "../services/productService";
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../App";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
-import { addProductToCart as addToCartApi } from "../services/productService";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/esm/Col";
+import { addProductToCart as addToCartApi } from "../services/productService";
 
 function ProductDetail() {
   const params = useParams();
   const id = params.id;
 
   const [product, setProduct] = useState([]);
-  const [rating, setRating] = useState([]);
+  const [rating, setRating] = useState(0);
   const { cart, setCart } = useContext(CartContext);
   const [ratings, setRatings] = useState([]);
 
@@ -33,14 +33,6 @@ function ProductDetail() {
     });
   }, [id]);
 
-  /* useEffect(() => {
-    getOne(id).then((result) => setProduct(result));
-  }, [id]);
-
-  useEffect(() => {
-    getProductRating(id).then((result) => setRating(result));
-  }, [id]); */
-
   async function addProductToCart() {
     try {
       await addToCartApi(product.id);
@@ -49,8 +41,9 @@ function ProductDetail() {
       console.error(error);
     }
   }
+
   useEffect(() => {
-    getProductRating(id).then((result) => {
+    getProductRatings(id).then((result) => {
       setRatings(result);
     });
   }, [id]);
@@ -157,6 +150,7 @@ function ProductDetail() {
       </Container>
     </>
   );
+
   function formatDate(date) {
     var result = "";
     const d = new Date(date);
