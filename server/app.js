@@ -15,10 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-//app.use("/users", require("./routes/userRoute"));
 app.use("/products", require("./routes/productRoute"));
 app.use("/ratings", require("./routes/ratingRoute"));
-//app.use("/rows", require("./routes/rowRoute"));
 app.use("/carts", require("./routes/cartRoute"));
 
 module.exports = app;

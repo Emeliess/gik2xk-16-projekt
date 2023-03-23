@@ -36,7 +36,6 @@ function ProductDetail() {
   async function addProductToCart() {
     try {
       await addToCartApi(product.id);
-      //setCart([...cart, product]);
     } catch (error) {
       console.error(error);
     }
