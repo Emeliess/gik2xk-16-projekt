@@ -3,6 +3,7 @@ const productService = require("../services/productService");
 const db = require("../models");
 const Sequelize = require("sequelize");
 
+//-----GET ALL PRODUCTS
 router.get("/", (req, res) => {
   db.cart
     .findAll({
@@ -23,13 +24,6 @@ router.post("/", async (req, res) => {
   const idKeys = Object.keys(id);
   const idValue = idKeys[0];
   productService.addToCart(idValue).then((result) => {
-    res.status(result.status).json(result.data);
-  });
-});
-
-//-----GET ALL PRODUCTS
-router.get("/", (req, res) => {
-  productService.getCart().then((result) => {
     res.status(result.status).json(result.data);
   });
 });
